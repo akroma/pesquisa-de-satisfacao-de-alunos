@@ -26,18 +26,21 @@ AppAsset::register($this);
     <div class="wrap">
         <?php
             NavBar::begin([
-                'brandLabel' => 'My Company',
+                'brandLabel' => 'SENAI Suíço-Brasileira Paulo Ernesto Tolle',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
                 ],
             ]);
+            if(!Yii::$app->user->isGuest){
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
                     ['label' => 'Home', 'url' => ['/site/index']],
-                    ['label' => 'About', 'url' => ['/site/about']],
-                    ['label' => 'Contact', 'url' => ['/site/contact']],
+                    ['label' => 'Turmas', 'url' => ['/turma']],
+                    ['label' => 'Avaliações', 'url' => ['/avaliacao']],
+                    ['label' => 'Itens Avaliados', 'url' => ['/avaliado']],
+                    ['label' => 'Item', 'url' => ['/item']],
                     Yii::$app->user->isGuest ?
                         ['label' => 'Login', 'url' => ['/site/login']] :
                         ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
@@ -45,6 +48,18 @@ AppAsset::register($this);
                             'linkOptions' => ['data-method' => 'post']],
                 ],
             ]);
+            }
+        else
+        {
+            echo Nav::widget([
+                'options' => ['class' => 'navbar-nav navbar-right'],
+                'items' => [
+
+                    ['label' => 'Avaliar', 'url' => ['/avaliacao/avaliar']],
+                ],
+            ]);
+
+        }
             NavBar::end();
         ?>
 
