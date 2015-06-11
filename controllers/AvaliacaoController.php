@@ -7,6 +7,7 @@ use Yii;
 use app\models\Avaliacao;
 use app\models\Turma;
 use app\models\AvaliacaoSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -20,11 +21,26 @@ class AvaliacaoController extends Controller
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'actions' => ['avaliar'],
+                        'allow' => true,
+
+                    ],
+                    [
+                    'allow' => true,
+                    'roles' => ['@']]
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
+
                 ],
+
             ],
         ];
     }
@@ -125,31 +141,46 @@ class AvaliacaoController extends Controller
     public function actionAvaliar($turma = null)
     {
 
-        if(empty($turma) )
-        {
+        if (empty($turma)) {
             $turma = new Turma;
 
-        return $this->render('turma', ['turma' => $turma]);
+            return $this->render('turma', ['turma' => $turma]);
 
-        }
-        else{
-            $avaliacao= new Avaliacao();
+        } else {
+            $avaliacao = new Avaliacao();
 
             $turma = Turma::findOne(['id' => $turma]);
 
             $itens = Item::find()->all();
 
+            if (Yii::$app->request->post()) {
+
+                $avaliacao = Yii::$app->request->post('Avaliacao');
+                $ok = true;
+                foreach ($avaliacao as $a) {
 
 
+                    $av = new Avaliacao();
+                    $av->id_item = $a['id_item'];
+                    $av->id_turma = $a['id_turma'];
+                    $av->id_avaliado = $a['id_avaliado'];
+                    $av->importancia = $a['importancia'];
+                    $av->satisfacao = $a['satisfacao'];
+                    $av->descricao = $a['descricao'];
 
-            if($turma)
-            {
-            return $this->render('avaliar', [
-                'itens' => $itens,
-                'turma' => $turma,
-            ]);
-            }
-            else{
+                    if (!$av->save()) {
+                        return new HttpException(500, 'Houve um erro ao salvar a sua avaliação :\'(');
+                    }
+                }
+
+                return $this->render('obrigado');
+
+            } elseif ($turma) {
+                return $this->render('avaliar', [
+                    'itens' => $itens,
+                    'turma' => $turma,
+                ]);
+            } else {
                 throw new HttpException(404, 'Turma Inválida :/');
             }
         }

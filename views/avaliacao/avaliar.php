@@ -28,8 +28,9 @@ $this->title = $turma->descricao . ' - Avaliação de Satisfação';
 
 
             <tbody>
+            <?php $key = 0; ?>
 
-            <?php foreach ($itens as $item): ?>
+            <?php foreach ($itens as  $item): ?>
 
 
 
@@ -45,22 +46,25 @@ $this->title = $turma->descricao . ' - Avaliação de Satisfação';
 
             foreach ($avaliados as $avaliado) {
 
+                $key++;
+
+
                 $avaliacao = new \app\models\Avaliacao();
 
-                echo $form->field($avaliacao, 'id_item')->textInput(['type' => 'hidden', 'value' => $item->id])->label(false);
-
-                echo $form->field($avaliacao, 'id_avaliado')->textInput(['value' => $avaliado->id, 'type' => 'hidden'])->label(false);
+                echo $form->field($avaliacao, '['.$key.']id_item')->textInput(['type' => 'hidden', 'value' => $item->id])->label(false);
+                echo $form->field($avaliacao, '['.$key.']id_turma')->textInput(['type' => 'hidden', 'value' => $turma->id])->label(false);
+                echo $form->field($avaliacao, '['.$key.']id_avaliado')->textInput(['value' => $avaliado->id, 'type' => 'hidden'])->label(false);
 
                 ?>
                 <tr>
                     <td colspan="3">
-                        <h4><?= $item->descricao; ?> <h5> <?= $item->tipo ==  'PRO' ? 'Professor'. $avaliado->nome : ''; ?> </h5></h4>
+                        <h4><?= $item->descricao; ?> <h5> <?= $item->tipo ==  'PRO' ? 'Professor(a) '. $avaliado->nome : ''; ?> </h5></h4>
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <?= $form->field($avaliacao, 'importancia',
+                        <?= $form->field($avaliacao, '['.$key.']importancia',
                             [
                                 'horizontalCssClasses' => [
                                     'wrapper' => 'col-sm-1',
@@ -71,7 +75,7 @@ $this->title = $turma->descricao . ' - Avaliação de Satisfação';
 
 
                     <td>
-                        <?= $form->field($avaliacao, 'satisfacao',
+                        <?= $form->field($avaliacao, '['.$key.']satisfacao',
                             [
                                 'horizontalCssClasses' => [
                                     'wrapper' => 'col-sm-1',
@@ -83,7 +87,7 @@ $this->title = $turma->descricao . ' - Avaliação de Satisfação';
 
                 <tr>
                     <td colspan="3" colspan="3" style="border: none">
-                        <?= $form->field($avaliacao, 'descricao')->textarea(['rows' => 3, 'placeholder' => 'Dúvidas, Sugestões e Reclamações'])->label(false) ?>
+                        <?= $form->field($avaliacao, '['.$key.']descricao')->textarea(['rows' => 3, 'placeholder' => 'Dúvidas, Sugestões e Reclamações'])->label(false) ?>
                     </td>
                 </tr>
             <?php
@@ -92,8 +96,9 @@ $this->title = $turma->descricao . ' - Avaliação de Satisfação';
             ?>
 
 
-            </tbody>
+
             <?php endforeach; ?>
+            </tbody>
         </table>
         <div class="form-group">
             <?= Html::submitButton('Finalizar Avaliação', ['class' => 'btn btn-success']) ?>
