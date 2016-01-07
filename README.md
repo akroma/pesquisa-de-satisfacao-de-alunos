@@ -7,7 +7,7 @@ Sistema de avaliação de satisfação escolar tem o objetivo de avaliar a satis
 PHP, MYSQL, HTML, CSS, JavaScript
 
 #Framework
-Yii
+Yii, para facilitar o desenvolvimento PHP no padrão MVC.
 
 #Dependências
 bootstrap
