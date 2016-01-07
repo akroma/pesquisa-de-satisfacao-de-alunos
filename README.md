@@ -7,7 +7,10 @@ Sistema de avaliação de satisfação escolar tem o objetivo de avaliar a satis
 PHP, MYSQL, HTML, CSS, JavaScript
 
 #Framework
-Yii, para facilitar o desenvolvimento PHP no padrão MVC.
+[Yii Framework](http://www.yiiframework.com/), para facilitar o desenvolvimento PHP no padrão MVC.
 
 #Dependências
-bootstrap
+[Twitter Bootstrap](http://getbootstrap.com)
+
+# Open source
+Este projeto foi liberado como código aberto com o intuito de estar disponível para utilização por instituições de ensino com necessidades similares.
